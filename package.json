@@ -1,0 +1,9 @@
+{
+  "name": "skogschatt",
+  "version": "0.1.0",
+  "description": "Swedish forest chat PWA — with Kikinda owl vibe",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "license": "MIT"
+}

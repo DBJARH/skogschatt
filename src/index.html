@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a3a1a" />
+  <title>Skogschatt</title>
+  <link rel="manifest" href="../public/manifest.json" />
+  <link rel="stylesheet" href="forest.css" />
+</head>
+<body class="vibe-skog">
+
+  <header>
+    <span id="title">🌲 Skogschatt</span>
+    <div id="controls">
+      <button id="lang-toggle" title="Language">SV / EN</button>
+      <button id="vibe-toggle" title="Switch vibe">🦉 Kikinda</button>
+    </div>
+  </header>
+
+  <main id="chat-window">
+    <div id="messages"></div>
+  </main>
+
+  <footer>
+    <input id="msg-input" type="text" placeholder="Skriv något... / Type something..." autocomplete="off" />
+    <button id="send-btn">➤</button>
+  </footer>
+
+  <!-- Firebase SDK (CDN, no bundler needed) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../service-worker.js');
+    }
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { initChat } from "./chat.js";
+    import { initUI } from "./ui.js";
+    import { firebaseConfig, LOCAL_USER } from "./app.js";
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    initUI();
+    initChat(db, LOCAL_USER);
+  </script>
+
+</body>
+</html>
