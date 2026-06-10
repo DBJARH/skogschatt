@@ -7,13 +7,13 @@
 
 // Firebase config — fill in after creating your Firebase project
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCRh_Dcp5sXpYT8FOKfNrI5fk918BLSBD4",
+  authDomain: "skogschatt-f5a2a.firebaseapp.com",
+  databaseURL: "https://skogschatt-f5a2a-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "skogschatt-f5a2a",
+  storageBucket: "skogschatt-f5a2a.firebasestorage.app",
+  messagingSenderId: "309154824117",
+  appId: "1:309154824117:web:ebae499cf4a85edbf523fc"
 };
 
 // Change this per device: "Dusan" on your machine, "Andrey" on Andrey's
