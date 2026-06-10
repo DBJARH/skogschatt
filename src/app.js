@@ -16,13 +16,10 @@ export const firebaseConfig = {
   appId: "1:309154824117:web:ebae499cf4a85edbf523fc"
 };
 
-// Maps each person's Google account UID (from Firebase Google Sign-In) to a
-// display name. Both devices load this same deployed app.js, so the display
-// name can't be a hardcoded constant — it's derived from the signed-in
-// user's UID at runtime (see index.html). These UIDs must match the
-// allowlist in database.rules.json (that file is the actual security
-// boundary).
-export const USERS_BY_UID = {
-  "k8DojeZzjwZqVW0fvufiJAF8FpO2": "Dusan",
-  "U5zgSRvu8OhOudwDV0BfDuP9Dvp1": "Andrey"
-};
+// Converts a Google account email into a Firebase Realtime Database key
+// (keys can't contain '.', '#', '$', '[', ']'). Used to look up
+// skogschatt/users/{emailKey} -> { community, name } at sign-in (see
+// index.html) and matched against database.rules.json.
+export function emailToKey(email) {
+  return email.replace(/\./g, ",");
+}

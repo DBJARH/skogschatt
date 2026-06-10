@@ -45,14 +45,14 @@
   <!-- Firebase SDK (CDN, no bundler needed) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
     import {
       getAuth, GoogleAuthProvider, signInWithPopup,
       onAuthStateChanged, signOut
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { initChat } from "./chat.js";
     import { initUI } from "./ui.js";
-    import { firebaseConfig, USERS_BY_UID } from "./app.js";
+    import { firebaseConfig, emailToKey } from "./app.js";
     import "./SKOGCHATT.js";
 
     if ('serviceWorker' in navigator) {
@@ -77,12 +77,12 @@
 
     signoutBtn.addEventListener("click", () => signOut(auth));
 
-    // Writes are gated by Firebase Auth + database.rules.json (UID allowlist),
-    // so chat must wait for sign-in before sending. The display name is
-    // derived from this device's Google UID (see app.js) since both devices
-    // load the same deployed app.js.
+    // Writes are gated by Firebase Auth + database.rules.json (email
+    // allowlist under skogschatt/users), so chat must wait for sign-in
+    // before sending. The display label ("MALMO Andrey" / "KIKINDA Dusan")
+    // is looked up from skogschatt/users/{emailKey} -> { community, name }.
     let chatStarted = false;
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
         loginScreen.hidden = false;
         signoutBtn.hidden = true;
@@ -90,20 +90,22 @@
         return;
       }
 
-      const name = USERS_BY_UID[user.uid];
-      if (!name) {
+      const profileSnap = await get(ref(db, `skogschatt/users/${emailToKey(user.email)}`));
+      const profile = profileSnap.val();
+      if (!profile) {
         loginScreen.hidden = false;
         signoutBtn.hidden = false;
         loginStatus.textContent =
-          `Unrecognized account (UID ${user.uid}) — add it to USERS_BY_UID in src/app.js and the allowlist in database.rules.json. Sign out to try a different account.`;
+          `Unrecognized account (${user.email}) — add it to skogschatt/users in the Firebase console. Sign out to try a different account.`;
         return;
       }
 
+      const label = `${profile.community} ${profile.name}`;
       loginScreen.hidden = true;
       signoutBtn.hidden = false;
       if (!chatStarted) {
         chatStarted = true;
-        initChat(db, name);
+        initChat(db, label);
       }
     });
   </script>

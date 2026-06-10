@@ -1,9 +1,13 @@
 {
   "rules": {
     "skogschatt": {
-      "messages": {
+      "users": {
         ".read": "auth != null",
-        ".write": "auth != null && (auth.uid === 'k8DojeZzjwZqVW0fvufiJAF8FpO2' || auth.uid === 'U5zgSRvu8OhOudwDV0BfDuP9Dvp1')",
+        ".write": false
+      },
+      "messages": {
+        ".read": "auth != null && root.child('skogschatt/users/' + auth.token.email.replace('.', ',')).exists()",
+        ".write": "auth != null && root.child('skogschatt/users/' + auth.token.email.replace('.', ',')).exists()",
         "$messageId": {
           ".validate": "newData.hasChildren(['user', 'text', 'ts'])"
         }

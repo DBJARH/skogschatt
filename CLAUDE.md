@@ -1,8 +1,13 @@
 # Skogschatt
 
-A two-person (Dusan & Andrej) bilingual (SV/EN) chat PWA with two visual "vibes":
+A bilingual (SV/EN) community chat PWA with two visual "vibes":
 - **Skog** — Swedish forest, dimmed forest-path SVG background
 - **Kikinda** — dimmed long-eared owl portrait SVG background (Kikinda, Serbia, is famous for its owl colony)
+
+Users belong to a `community` (currently `MALMO` and `KIKINDA`; Andrey is in
+MALMO, Dusan is in KIKINDA). Chat is a single shared stream; each message is
+shown with the sender's name prefixed by their community code, e.g.
+"KIKINDA Dusan". More communities/users can be added later — see Conventions.
 
 ## Stack
 - Vanilla JS (no React, no framework, no build step)
@@ -17,14 +22,14 @@ public/
   images/kikinda-owls.svg
 src/
   index.html   - entry point
-  app.js       - Firebase config + USERS_BY_UID (UID -> "Dusan"/"Andrey")
+  app.js       - Firebase config + emailToKey() helper
   chat.js      - Firebase realtime chat logic
   ui.js        - vibe switching (Skog/Kikinda) + language toggle
   forest.css   - all styling, including vibe backgrounds
   SKOGCHATT.js - sets window.SKOGCHATT.build_stamp (local time), update
                  on every change so you can verify the deploy in the console
 service-worker.js - PWA cache (bump CACHE version when assets change)
-database.rules.json - RTDB security rules (UID allowlist for writes)
+database.rules.json - RTDB security rules (email allowlist via skogschatt/users)
 ```
 
 ## Conventions
@@ -33,11 +38,15 @@ database.rules.json - RTDB security rules (UID allowlist for writes)
   `background-image` with a dark `linear-gradient` overlay for dimming.
   Don't bake dimming into the SVGs themselves — keep the overlay in `forest.css`.
 - All paths must stay relative (GitHub Pages serves from `/skogschatt/` subpath).
-- Both devices load the same deployed `app.js` — there is no per-device
-  config file. Each person's display name ("Dusan"/"Andrey") is derived at
-  runtime from their signed-in Google account UID via `USERS_BY_UID` in
-  `src/app.js`. Adding a new person means adding their Google UID to both
-  `USERS_BY_UID` and the allowlist in `database.rules.json`.
+- All devices load the same deployed `app.js` — there is no per-device
+  config file. User identity/access is data, not code: Firebase RTDB has
+  `skogschatt/users/{emailKey} -> { community, name }`, where `emailKey` is
+  the signed-in Google account email with `.` replaced by `,` (see
+  `emailToKey()` in `src/app.js` — Firebase keys can't contain `.`).
+  `database.rules.json` gates `skogschatt/messages` read/write on the
+  caller's email existing under `skogschatt/users`. Adding a new
+  person/community means adding one entry under `skogschatt/users` in the
+  Firebase Console (Realtime Database data, not rules) — no redeploy needed.
 - Auth uses `signInWithPopup` for Google Sign-In. (`signInWithRedirect` was
   tried first but failed: the redirect's pending-auth state was lost due to
   third-party storage partitioning between the `firebaseapp.com` authDomain

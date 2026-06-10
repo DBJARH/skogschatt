@@ -8,9 +8,10 @@
 import { ref, push, onChildAdded, serverTimestamp } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Writes to skogschatt/messages are gated by Firebase Auth (anonymous
-// sign-in) + the UID allowlist in database.rules.json, enforced server-side.
-// `_user` here is just a display label for rendering, not an access control.
+// Writes to skogschatt/messages are gated by Firebase Auth + the email
+// allowlist in database.rules.json, enforced server-side. `_user` here is
+// just a display label ("MALMO Andrey" / "KIKINDA Dusan") for rendering, not
+// an access control.
 let _db, _user;
 
 export function initChat(db, user) {
@@ -53,7 +54,7 @@ function renderMessage(msg) {
   const container = document.getElementById("messages");
   const div = document.createElement("div");
   div.classList.add("message");
-  div.classList.add(msg.user === "Dusan" ? "me" : "them");
+  div.classList.add(msg.user === _user ? "me" : "them");
 
   div.innerHTML = `
     <span class="sender">${msg.user}</span>
