@@ -7,45 +7,73 @@
 
 import { ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Sanity checks run after sign-in, before any chat/profile UI logic.
-// Each check logs its own pass/fail. Returns true only if all checks pass;
-// index.js must not proceed to app logic if this returns false.
-export async function runTests(db, user) {
-  console.log("[tests] starting, signed in as", user.email);
+// Each test unit (TU) returns true/false and never throws — it catches its
+// own errors, logs the happy or sad path via console.log, and returns false
+// on failure. runTests() runs them in order and stops at the first failure.
 
+function tuDbInitialized(db) {
   if (!db) {
-    console.log("[tests] FAIL: db is not initialized");
+    console.log("[tests] tuDbInitialized: FAIL - db is not initialized");
     return false;
   }
-  console.log("[tests] PASS: db is initialized");
+  console.log("[tests] tuDbInitialized: PASS");
+  return true;
+}
 
+function tuUserSignedIn(user) {
   if (!user || !user.email) {
-    console.log("[tests] FAIL: no signed-in user / user.email");
+    console.log("[tests] tuUserSignedIn: FAIL - no signed-in user / user.email");
     return false;
   }
-  console.log("[tests] PASS: signed-in user has email", user.email);
+  console.log("[tests] tuUserSignedIn: PASS - signed in as", user.email);
+  return true;
+}
 
-  let usersSnap;
+async function tuUsersReadable(db) {
+  let snap;
   try {
-    usersSnap = await get(ref(db, "skogschatt/users"));
+    snap = await get(ref(db, "skogschatt/users"));
   } catch (err) {
-    console.log("[tests] FAIL: get(skogschatt/users) threw:", err.message);
+    console.log("[tests] tuUsersReadable: FAIL - get(skogschatt/users) threw:", err.message);
     return false;
   }
-
-  const users = usersSnap.val();
+  const users = snap.val();
   if (!users || Object.keys(users).length === 0) {
-    console.log("[tests] FAIL: skogschatt/users is empty or null", users);
+    console.log("[tests] tuUsersReadable: FAIL - skogschatt/users is empty or null", users);
     return false;
   }
-  console.log("[tests] PASS: skogschatt/users has", Object.keys(users).length, "entries", users);
+  console.log("[tests] tuUsersReadable: PASS -", Object.keys(users).length, "entries", users);
+  return true;
+}
 
+async function tuProfileFound(db, user) {
+  let snap;
+  try {
+    snap = await get(ref(db, "skogschatt/users"));
+  } catch (err) {
+    console.log("[tests] tuProfileFound: FAIL - get(skogschatt/users) threw:", err.message);
+    return false;
+  }
+  const users = snap.val() || {};
   const profile = Object.values(users).find((u) => u.email === user.email);
   if (!profile) {
-    console.log("[tests] FAIL: no skogschatt/users entry with email", user.email);
+    console.log("[tests] tuProfileFound: FAIL - no entry with email", user.email);
     return false;
   }
-  console.log("[tests] PASS: found profile for", user.email, "->", profile);
+  console.log("[tests] tuProfileFound: PASS -", user.email, "->", profile);
+  return true;
+}
+
+// Sanity checks run after sign-in, before any chat/profile UI logic.
+// Returns true only if all checks pass; index.js must not proceed to app
+// logic if this returns false.
+export async function runTests(db, user) {
+  console.log("[tests] starting");
+
+  if (!tuDbInitialized(db)) return false;
+  if (!tuUserSignedIn(user)) return false;
+  if (!(await tuUsersReadable(db))) return false;
+  if (!(await tuProfileFound(db, user))) return false;
 
   console.log("[tests] all checks passed");
   return true;
