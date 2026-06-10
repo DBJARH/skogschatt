@@ -5,9 +5,13 @@ html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; }
 
 /* ── Vibe: Skog (Swedish forest) ── */
 body.vibe-skog {
-  background: #0d1f0d;
+  background-color: #0d1f0d;
   background-image:
-    radial-gradient(ellipse at top, #1a3a1a 0%, #0d1f0d 70%);
+    linear-gradient(rgba(13,31,13,0.78), rgba(13,31,13,0.85)),
+    url("../public/images/forest-path.svg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #c8e6c9;
   transition: background 1s, color 0.5s;
 }
@@ -22,9 +26,13 @@ body.vibe-skog button:hover { background: #40916c; }
 
 /* ── Vibe: Kikinda (owls, dusk, Serbian plains) ── */
 body.vibe-kikinda {
-  background: #1a0f05;
+  background-color: #1a0f05;
   background-image:
-    radial-gradient(ellipse at top, #3b1f08 0%, #1a0f05 70%);
+    linear-gradient(rgba(26,15,5,0.78), rgba(26,15,5,0.85)),
+    url("../public/images/kikinda-owls.svg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #f5deb3;
   transition: background 1s, color 0.5s;
 }
@@ -36,23 +44,6 @@ body.vibe-kikinda .me .bubble { background: #7c3a00; }
 body.vibe-kikinda input   { background: #2a1505; color: #f5deb3; border: 1px solid #6b3a1f; }
 body.vibe-kikinda button  { background: #7c3a00; color: #f5deb3; }
 body.vibe-kikinda button:hover { background: #a04f00; }
-
-/* ── Ambient decorations ── */
-body.vibe-skog::before {
-  content: "🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲";
-  position: fixed; bottom: 70px; left: 0; right: 0;
-  font-size: 2rem; text-align: center;
-  opacity: 0.08; pointer-events: none;
-  letter-spacing: 0.5rem;
-}
-
-body.vibe-kikinda::before {
-  content: "🦉  🦉  🦉";
-  position: fixed; bottom: 80px; left: 0; right: 0;
-  font-size: 3rem; text-align: center;
-  opacity: 0.12; pointer-events: none;
-  letter-spacing: 2rem;
-}
 
 /* ── Layout ── */
 header {

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1f0f"/>
+      <stop offset="55%" stop-color="#102b16"/>
+      <stop offset="100%" stop-color="#06140a"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#cfe8d0" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#cfe8d0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="path" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c3a22"/>
+      <stop offset="100%" stop-color="#0c1f10"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="1800" fill="url(#sky)"/>
+
+  <!-- moon glow -->
+  <circle cx="850" cy="320" r="220" fill="url(#moon)"/>
+  <circle cx="850" cy="320" r="70" fill="#dff5e0" opacity="0.25"/>
+
+  <!-- distant tree line -->
+  <g fill="#0e2113" opacity="0.8">
+    <polygon points="0,650 80,500 160,650 240,520 320,650 400,540 480,650 560,500 640,650 720,530 800,650 880,510 960,650 1040,540 1120,650 1200,560 1200,750 0,750"/>
+  </g>
+
+  <!-- mid tree line -->
+  <g fill="#091a0d" opacity="0.9">
+    <polygon points="0,820 100,580 200,820 320,560 440,820 560,590 680,820 800,570 920,820 1040,600 1160,820 1200,650 1200,950 0,950"/>
+  </g>
+
+  <!-- forest path receding -->
+  <polygon points="500,1800 700,1800 640,900 560,900" fill="url(#path)" opacity="0.85"/>
+
+  <!-- foreground trees -->
+  <g fill="#050f08">
+    <polygon points="-50,1800 150,1800 50,950"/>
+    <polygon points="1050,1800 1250,1800 1150,950"/>
+    <polygon points="900,1800 1100,1800 1000,1050"/>
+    <polygon points="100,1800 320,1800 210,1100"/>
+  </g>
+</svg>
