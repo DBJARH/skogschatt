@@ -36,11 +36,16 @@ database.rules.json - RTDB security rules (UID allowlist for writes)
   runtime from their signed-in Google account UID via `USERS_BY_UID` in
   `src/app.js`. Adding a new person means adding their Google UID to both
   `USERS_BY_UID` and the allowlist in `database.rules.json`.
-- Auth uses `signInWithRedirect` (not popup) for Google Sign-In — this is a
-  `display: standalone` PWA, and OAuth popups are unreliable in iOS Safari
-  standalone mode. A login screen (`#login-screen` in `index.html`) is shown
-  until `onAuthStateChanged` reports a recognized user.
+- Auth uses `signInWithPopup` for Google Sign-In. (`signInWithRedirect` was
+  tried first but failed: the redirect's pending-auth state was lost due to
+  third-party storage partitioning between the `firebaseapp.com` authDomain
+  and the `github.io` hosting domain.) A login screen (`#login-screen` in
+  `index.html`) is shown until `onAuthStateChanged` reports a recognized user.
 - Bump `CACHE` in `service-worker.js` whenever cached assets (HTML/CSS/JS/images) change.
+- `SKOGCHATT.TIMESTAMP` (project root, ISO 8601 UTC) is updated on every
+  change. `index.html` fetches it with `cache: 'no-store'` and logs it to the
+  console on load, so you can confirm the browser is running the latest
+  deploy and not a stale cached version.
 
 ## Deployment
 - Live at: https://dbjarh.github.io/skogschatt/src/index.html
