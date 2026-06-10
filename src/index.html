@@ -90,8 +90,24 @@
         return;
       }
 
-      const profileSnap = await get(ref(db, `skogschatt/users/${emailToKey(user.email)}`));
-      const profile = profileSnap.val();
+      if (user.email.includes(",")) {
+        loginStatus.textContent =
+          `Fatal: signed-in email "${user.email}" contains a comma, which is invalid in an email address and is reserved as the '.' placeholder in skogschatt/users keys.`;
+        throw new Error(`Invalid email contains comma: ${user.email}`);
+      }
+
+      const lookupKey = emailToKey(user.email);
+      window.SKOGCHATT.lastProfileLookup = { email: user.email, lookupKey };
+      let profile;
+      try {
+        const profileSnap = await get(ref(db, `skogschatt/users/${lookupKey}`));
+        profile = profileSnap.val();
+        window.SKOGCHATT.lastProfileLookup.result = profile;
+      } catch (err) {
+        window.SKOGCHATT.lastProfileLookup.error = err.message;
+        loginStatus.textContent = `Profile lookup failed: ${err.message}`;
+        return;
+      }
       if (!profile) {
         loginScreen.hidden = false;
         signoutBtn.hidden = false;
