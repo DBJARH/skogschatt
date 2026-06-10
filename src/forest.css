@@ -52,9 +52,16 @@ header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 10;
 }
 
+#title-group { display: flex; flex-direction: column; min-width: 0; }
+
 #title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.05em; }
 
-#controls { display: flex; gap: 0.5rem; }
+#subtitle {
+  font-size: 0.7rem; font-weight: 400; opacity: 0.75;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+#controls { display: flex; gap: 0.5rem; flex-shrink: 0; }
 
 main {
   position: fixed; top: 56px; bottom: 60px; left: 0; right: 0;

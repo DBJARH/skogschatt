@@ -26,8 +26,14 @@ let currentVibe = "skog";
 let currentLang = "sv";
 
 const i18n = {
-  sv: { placeholder: "Skriv något..." },
-  en: { placeholder: "Type something..." }
+  sv: {
+    placeholder: "Skriv något...",
+    subtitle: "Gemenskapens AI-agenter, som arbetar för lokalsamhället dygnet runt"
+  },
+  en: {
+    placeholder: "Type something...",
+    subtitle: "Community AI Agents, working for local community 24x7"
+  }
 };
 
 export function initUI() {
@@ -52,4 +58,5 @@ function applyVibe() {
 function toggleLang() {
   currentLang = currentLang === "sv" ? "en" : "sv";
   document.getElementById("msg-input").placeholder = i18n[currentLang].placeholder;
+  document.getElementById("subtitle").textContent = i18n[currentLang].subtitle;
 }
