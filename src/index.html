@@ -96,6 +96,8 @@
       try {
         const usersSnap = await get(ref(db, "skogschatt/users"));
         const users = usersSnap.val() || {};
+        window.SKOGCHATT.allUsers = users;
+        window.SKOGCHATT.allUserKeys = Object.keys(users);
         profile = Object.values(users).find((u) => u.email === user.email);
         window.SKOGCHATT.lastProfileLookup.result = profile || null;
       } catch (err) {

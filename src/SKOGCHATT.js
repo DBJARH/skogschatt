@@ -12,10 +12,14 @@ function getTimestamp() {
 //
 //   build_stamp       - local time this page was loaded (set below)
 //   lastProfileLookup - set by index.html after sign-in: { email, result|error }
+//   allUsers          - set by index.html after sign-in: full skogschatt/users object
+//   allUserKeys       - set by index.html after sign-in: Object.keys(allUsers)
 // --------------------------------------------------
 export const SKOGCHATT = {
   build_stamp: getTimestamp(),
-  lastProfileLookup: "INITIAL_VALUE"
+  lastProfileLookup: "INITIAL_VALUE",
+  allUsers: "INITIAL_VALUE",
+  allUserKeys: "INITIAL_VALUE"
 };
 
 window.SKOGCHATT = SKOGCHATT;
