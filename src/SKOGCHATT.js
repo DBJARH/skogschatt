@@ -5,6 +5,11 @@ function getTimestamp() {
          `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
+// window.SKOGCHATT is the single diagnostic object, inspectable in the dev
+// console. Defined fully here; other modules only set/append properties on
+// it, never redefine it. Known properties:
+//   build_stamp       - local time this page was loaded (set below)
+//   lastProfileLookup - set by index.html after sign-in: { email, lookupKey, result|error }
 export const SKOGCHATT = {
   build_stamp: getTimestamp()
 };
