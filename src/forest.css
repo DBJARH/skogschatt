@@ -7,8 +7,8 @@ html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; }
 body.vibe-skog {
   background-color: #0d1f0d;
   background-image:
-    linear-gradient(rgba(13,31,13,0.45), rgba(13,31,13,0.55)),
-    url("../public/images/forest-path.svg");
+    linear-gradient(rgba(13,31,13,0.7), rgba(13,31,13,0.8)),
+    url("../public/images/swenska-skogen-photo.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -20,7 +20,7 @@ body.vibe-skog header  { background: rgba(20,50,20,0.9); border-bottom: 1px soli
 body.vibe-skog footer  { background: rgba(20,50,20,0.9); border-top: 1px solid #2e5d2e; }
 body.vibe-skog .bubble { background: #1b4332; color: #d8f3dc; }
 body.vibe-skog .me .bubble { background: #2d6a4f; }
-body.vibe-skog input   { background: #1a3a1a; color: #c8e6c9; border: 1px solid #2e5d2e; }
+body.vibe-skog input   { background: #1a3a1a; color: #ffffff; border: 1px solid #2e5d2e; }
 body.vibe-skog button  { background: #2d6a4f; color: #d8f3dc; }
 body.vibe-skog button:hover { background: #40916c; }
 
