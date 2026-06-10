@@ -21,6 +21,8 @@ src/
   chat.js      - Firebase realtime chat logic
   ui.js        - vibe switching (Skog/Kikinda) + language toggle
   forest.css   - all styling, including vibe backgrounds
+  SKOGCHATT.js - sets window.SKOGCHATT.build_stamp (local time), update
+                 on every change so you can verify the deploy in the console
 service-worker.js - PWA cache (bump CACHE version when assets change)
 database.rules.json - RTDB security rules (UID allowlist for writes)
 ```
@@ -42,11 +44,10 @@ database.rules.json - RTDB security rules (UID allowlist for writes)
   and the `github.io` hosting domain.) A login screen (`#login-screen` in
   `index.html`) is shown until `onAuthStateChanged` reports a recognized user.
 - Bump `CACHE` in `service-worker.js` whenever cached assets (HTML/CSS/JS/images) change.
-- `SKOGCHATT.TIMESTAMP` (project root, local time, `YYYY-MM-DD HH-MM-SS`) is
-  updated on every change. `index.html` fetches it with `cache: 'no-store'`
-  into `window.SKOGCHATT.buildTimestamp`, so you can inspect
-  `window.SKOGCHATT` in the dev console on demand to confirm the browser is
-  running the latest deploy and not a stale cached version.
+- `src/SKOGCHATT.js` sets `window.SKOGCHATT.build_stamp` to the local time
+  the file was last edited. It's not in the service worker's precache list,
+  so it's always fetched fresh — inspect `window.SKOGCHATT` in the dev
+  console to confirm the browser is running the latest deploy.
 
 ## Deployment
 - Live at: https://dbjarh.github.io/skogschatt/src/index.html

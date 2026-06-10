@@ -53,18 +53,11 @@
     import { initChat } from "./chat.js";
     import { initUI } from "./ui.js";
     import { firebaseConfig, USERS_BY_UID } from "./app.js";
+    import "./SKOGCHATT.js";
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('../service-worker.js');
     }
-
-    // Inspect window.SKOGCHATT in the dev console to confirm you're running
-    // the latest deploy, not a stale cached version.
-    window.SKOGCHATT = {};
-    fetch('../SKOGCHATT.TIMESTAMP', { cache: 'no-store' })
-      .then((r) => r.text())
-      .then((t) => { window.SKOGCHATT.buildTimestamp = t.trim(); })
-      .catch(() => {});
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
