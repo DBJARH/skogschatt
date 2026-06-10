@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "skogschatt": {
+      "messages": {
+        ".read": "auth != null",
+        ".write": "auth != null && (auth.uid === 'REPLACE_WITH_DUSAN_UID' || auth.uid === 'REPLACE_WITH_ANDREY_UID')",
+        "$messageId": {
+          ".validate": "newData.hasChildren(['user', 'text', 'ts'])"
+        }
+      }
+    }
+  }
+}

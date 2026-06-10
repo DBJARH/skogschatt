@@ -30,23 +30,34 @@
   </footer>
 
   <!-- Firebase SDK (CDN, no bundler needed) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('../service-worker.js');
-    }
-  </script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { initChat } from "./chat.js";
     import { initUI } from "./ui.js";
-    import { firebaseConfig, LOCAL_USER } from "./app.js";
+    import { firebaseConfig, LOCAL_USER, ALLOWED_USERS } from "./app.js";
+
+    if (!ALLOWED_USERS.includes(LOCAL_USER)) {
+      alert(`Invalid LOCAL_USER "${LOCAL_USER}" — check src/app.js`);
+      throw new Error(`Invalid LOCAL_USER "${LOCAL_USER}"`);
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../service-worker.js');
+    }
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+    const auth = getAuth(app);
 
     initUI();
-    initChat(db, LOCAL_USER);
+
+    // Writes are gated by Firebase Auth + database.rules.json (UID allowlist),
+    // so chat must wait for anonymous sign-in to complete before sending.
+    signInAnonymously(auth)
+      .then(() => initChat(db, LOCAL_USER))
+      .catch((err) => alert(`Sign-in failed: ${err.message}`));
   </script>
 
 </body>

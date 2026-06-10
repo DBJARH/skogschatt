@@ -1,6 +1,16 @@
+//-----------------------------------------------
+// NOTE: This file relies on the host (index.html) loading it via
+// <script type="module">. The `import`/`export` syntax below is only
+// valid because of that — there is no in-language "module" keyword;
+// module-ness is granted externally by the browser/HTML, not the file itself.
+//-----------------------------------------------
+
 import { ref, push, onChildAdded, serverTimestamp } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+// Writes to skogschatt/messages are gated by Firebase Auth (anonymous
+// sign-in) + the UID allowlist in database.rules.json, enforced server-side.
+// `_user` here is just a display label for rendering, not an access control.
 let _db, _user;
 
 export function initChat(db, user) {

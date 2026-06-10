@@ -1,3 +1,10 @@
+//-----------------------------------------------
+// NOTE: This file relies on the host (index.html) loading it via
+// <script type="module">. The `import`/`export` syntax below is only
+// valid because of that — there is no in-language "module" keyword;
+// module-ness is granted externally by the browser/HTML, not the file itself.
+//-----------------------------------------------
+
 const OWL_ICON = '<img src="../public/icons/favicon.svg" alt="owl" class="icon-emoji" />';
 
 const VIBES = {
