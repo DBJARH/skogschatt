@@ -10,16 +10,15 @@ function getTimestamp() {
 // console via console.dir(SKOGCHATT). Defined fully here; other modules only
 // set/append properties on it, never redefine it. Known properties:
 //
-//   build_stamp       - local time this page was loaded (set below)
-//   lastProfileLookup - set by index.html after sign-in: { email, result|error }
-//   allUsers          - set by index.html after sign-in: full skogschatt/users object
-//   allUserKeys       - set by index.html after sign-in: Object.keys(allUsers)
+//   build_stamp - local time this page was loaded (set below)
+//   testsPassed - set by index.js after sign-in: result of tests.js runTests()
+//
+// See the dev console for [tests]/[index] log lines with full diagnostic
+// detail (profile lookups, skogschatt/users contents, etc.).
 // --------------------------------------------------
 export const SKOGCHATT = {
   build_stamp: getTimestamp(),
-  lastProfileLookup: "INITIAL_VALUE",
-  allUsers: "INITIAL_VALUE",
-  allUserKeys: "INITIAL_VALUE"
+  testsPassed: "INITIAL_VALUE"
 };
 
 window.SKOGCHATT = SKOGCHATT;

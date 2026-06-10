@@ -1,10 +1,12 @@
-const CACHE = "skogschatt-v27";
+const CACHE = "skogschatt-v28";
 const ASSETS = [
   "./src/index.html",
   "./src/forest.css",
   "./src/app.js",
   "./src/chat.js",
-  "./src/ui.js"
+  "./src/ui.js",
+  "./src/index.js",
+  "./src/tests.js"
 ];
 
 self.addEventListener("install", (e) => {

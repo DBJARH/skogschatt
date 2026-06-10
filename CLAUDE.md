@@ -21,7 +21,10 @@ public/
   images/forest-path.svg
   images/kikinda-owls.svg
 src/
-  index.html   - entry point
+  index.html   - entry point (markup only, loads index.js as a module)
+  index.js     - app bootstrap: Firebase init, auth, sign-in/out, profile lookup
+  tests.js     - sanity checks run after sign-in, before app logic; logs via
+                 console.log("[tests] ..."); index.js halts if these fail
   app.js       - Firebase config
   chat.js      - Firebase realtime chat logic
   ui.js        - vibe switching (Skog/Kikinda) + language toggle
@@ -60,6 +63,13 @@ database.rules.json - RTDB security rules (any signed-in Google account)
   the file was last edited. It's not in the service worker's precache list,
   so it's always fetched fresh — inspect `window.SKOGCHATT` in the dev
   console to confirm the browser is running the latest deploy.
+- After sign-in, `index.js` runs `tests.js`'s `runTests(db, user)` first and
+  halts (shows "Unrecognized account") if it returns false — app logic
+  (profile lookup, chat init) only runs after tests pass. Don't mix test
+  checks into app logic or vice versa. Diagnostics use
+  `console.log("[tests] ...")` / `console.log("[index] ...")` so the dev
+  console shows what's happening; keep `window.SKOGCHATT` for build-version
+  info, not ad-hoc debug dumps.
 
 ## Deployment
 - Live at: https://dbjarh.github.io/skogschatt/src/index.html
