@@ -29,7 +29,7 @@ src/
   SKOGCHATT.js - sets window.SKOGCHATT.build_stamp (local time), update
                  on every change so you can verify the deploy in the console
 service-worker.js - PWA cache (bump CACHE version when assets change)
-database.rules.json - RTDB security rules (email allowlist via skogschatt/userEmails)
+database.rules.json - RTDB security rules (any signed-in Google account)
 ```
 
 ## Conventions
@@ -44,14 +44,11 @@ database.rules.json - RTDB security rules (email allowlist via skogschatt/userEm
     ordinal keys (`1`, `2`, ...). The app fetches all of `skogschatt/users`
     after sign-in and finds the entry whose `email` matches the signed-in
     Google account, to build the display label (e.g. "KIKINDA Dusan").
-  - `skogschatt/userEmails/{emailKey} -> true` — a separate index used only
-    by `database.rules.json` to gate `skogschatt/messages` read/write,
-    where `emailKey` is the signed-in Google account email with `.` replaced
-    by `,` (Firebase RTDB keys can't contain `.`). Rules can't search by
-    field value, hence this separate boolean map keyed by email.
+  - `skogschatt/messages` read/write requires only `auth != null` — any
+    signed-in Google account can chat. `skogschatt/users` is purely for
+    display (community/name lookup), not an access-control allowlist.
   - Adding a new person/community means adding one entry under
-    `skogschatt/users` (with `email`) AND one entry under
-    `skogschatt/userEmails` (comma-encoded email -> `true`) in the Firebase
+    `skogschatt/users` (with `community`, `name`, `email`) in the Firebase
     Console (Realtime Database data, not rules) — no redeploy needed.
 - Auth uses `signInWithPopup` for Google Sign-In. (`signInWithRedirect` was
   tried first but failed: the redirect's pending-auth state was lost due to

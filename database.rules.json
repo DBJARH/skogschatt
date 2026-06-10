@@ -5,13 +5,9 @@
         ".read": "auth != null",
         ".write": false
       },
-      "userEmails": {
-        ".read": "auth != null",
-        ".write": false
-      },
       "messages": {
-        ".read": "auth != null && root.child('skogschatt/userEmails/' + auth.token.email.replace('.', ',')).val() === true",
-        ".write": "auth != null && root.child('skogschatt/userEmails/' + auth.token.email.replace('.', ',')).val() === true",
+        ".read": "auth != null",
+        ".write": "auth != null",
         "$messageId": {
           ".validate": "newData.hasChildren(['user', 'text', 'ts'])"
         }

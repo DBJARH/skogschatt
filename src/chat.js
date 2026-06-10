@@ -8,10 +8,9 @@
 import { ref, push, onChildAdded, serverTimestamp } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Writes to skogschatt/messages are gated by Firebase Auth + the email
-// allowlist in database.rules.json, enforced server-side. `_user` here is
-// just a display label ("MALMO Andrey" / "KIKINDA Dusan") for rendering, not
-// an access control.
+// Writes to skogschatt/messages require sign-in (database.rules.json),
+// enforced server-side. `_user` here is just a display label
+// ("MALMO Andrey" / "KIKINDA Dusan") for rendering, not an access control.
 let _db, _user;
 
 export function initChat(db, user) {
