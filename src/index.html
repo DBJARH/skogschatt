@@ -103,6 +103,10 @@
         const profileSnap = await get(ref(db, `skogschatt/users/${lookupKey}`));
         profile = profileSnap.val();
         window.SKOGCHATT.lastProfileLookup.result = profile;
+
+        const allUsersSnap = await get(ref(db, "skogschatt/users"));
+        window.SKOGCHATT.allUsers = allUsersSnap.val();
+        window.SKOGCHATT.allUserKeys = Object.keys(allUsersSnap.val() || {});
       } catch (err) {
         window.SKOGCHATT.lastProfileLookup.error = err.message;
         loginStatus.textContent = `Profile lookup failed: ${err.message}`;
