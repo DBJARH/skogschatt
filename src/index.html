@@ -58,11 +58,12 @@
       navigator.serviceWorker.register('../service-worker.js');
     }
 
-    // Logged so you can confirm the dev console is showing the deployed
-    // version, not a stale cached one.
+    // Inspect window.SKOGCHATT in the dev console to confirm you're running
+    // the latest deploy, not a stale cached version.
+    window.SKOGCHATT = {};
     fetch('../SKOGCHATT.TIMESTAMP', { cache: 'no-store' })
       .then((r) => r.text())
-      .then((t) => console.log('Skogchatt build:', t.trim()))
+      .then((t) => { window.SKOGCHATT.buildTimestamp = t.trim(); })
       .catch(() => {});
 
     const app = initializeApp(firebaseConfig);

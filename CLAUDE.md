@@ -42,10 +42,11 @@ database.rules.json - RTDB security rules (UID allowlist for writes)
   and the `github.io` hosting domain.) A login screen (`#login-screen` in
   `index.html`) is shown until `onAuthStateChanged` reports a recognized user.
 - Bump `CACHE` in `service-worker.js` whenever cached assets (HTML/CSS/JS/images) change.
-- `SKOGCHATT.TIMESTAMP` (project root, ISO 8601 UTC) is updated on every
-  change. `index.html` fetches it with `cache: 'no-store'` and logs it to the
-  console on load, so you can confirm the browser is running the latest
-  deploy and not a stale cached version.
+- `SKOGCHATT.TIMESTAMP` (project root, local time, `YYYY-MM-DD HH-MM-SS`) is
+  updated on every change. `index.html` fetches it with `cache: 'no-store'`
+  into `window.SKOGCHATT.buildTimestamp`, so you can inspect
+  `window.SKOGCHATT` in the dev console on demand to confirm the browser is
+  running the latest deploy and not a stale cached version.
 
 ## Deployment
 - Live at: https://dbjarh.github.io/skogschatt/src/index.html
