@@ -56,12 +56,7 @@
     // Writes are gated by Firebase Auth + database.rules.json (UID allowlist),
     // so chat must wait for anonymous sign-in to complete before sending.
     signInAnonymously(auth)
-      .then((cred) => {
-        // TEMPORARY: shows this device's UID so it can be added to the
-        // allowlist in database.rules.json. Remove once both UIDs are captured.
-        alert(`Your UID for database.rules.json:\n${cred.user.uid}`);
-        initChat(db, LOCAL_USER);
-      })
+      .then(() => initChat(db, LOCAL_USER))
       .catch((err) => alert(`Sign-in failed: ${err.message}`));
   </script>
 
