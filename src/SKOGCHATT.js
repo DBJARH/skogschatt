@@ -14,7 +14,7 @@ function getTimestamp() {
 // --------------------------------------------------
 export const SKOGCHATT = {
   build_stamp: getTimestamp(),
-  lastProfileLookup: null
+  lastProfileLookup: "INITIAL_VALUE"
 };
 
 window.SKOGCHATT = SKOGCHATT;
