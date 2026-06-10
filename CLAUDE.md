@@ -6,7 +6,7 @@ A two-person (Dusan & Andrej) bilingual (SV/EN) chat PWA with two visual "vibes"
 
 ## Stack
 - Vanilla JS (no React, no framework, no build step)
-- Firebase Realtime Database for chat + Anonymous Auth (config in `src/app.js`)
+- Firebase Realtime Database for chat + Google Sign-In auth (config in `src/app.js`)
 - Static PWA, deployed via GitHub Pages from `master` branch root
 
 ## Layout
@@ -32,10 +32,14 @@ database.rules.json - RTDB security rules (UID allowlist for writes)
   Don't bake dimming into the SVGs themselves — keep the overlay in `forest.css`.
 - All paths must stay relative (GitHub Pages serves from `/skogschatt/` subpath).
 - Both devices load the same deployed `app.js` — there is no per-device
-  config file. Each device's display name ("Dusan"/"Andrey") is derived at
-  runtime from its Firebase anonymous-auth UID via `USERS_BY_UID` in
-  `src/app.js`. Adding a new device means adding its UID to both
+  config file. Each person's display name ("Dusan"/"Andrey") is derived at
+  runtime from their signed-in Google account UID via `USERS_BY_UID` in
+  `src/app.js`. Adding a new person means adding their Google UID to both
   `USERS_BY_UID` and the allowlist in `database.rules.json`.
+- Auth uses `signInWithRedirect` (not popup) for Google Sign-In — this is a
+  `display: standalone` PWA, and OAuth popups are unreliable in iOS Safari
+  standalone mode. A login screen (`#login-screen` in `index.html`) is shown
+  until `onAuthStateChanged` reports a recognized user.
 - Bump `CACHE` in `service-worker.js` whenever cached assets (HTML/CSS/JS/images) change.
 
 ## Deployment

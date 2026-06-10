@@ -16,11 +16,18 @@ export const firebaseConfig = {
   appId: "1:309154824117:web:ebae499cf4a85edbf523fc"
 };
 
-// Maps each device's Firebase anonymous-auth UID to a display name.
-// Both devices load this same deployed app.js, so the display name can't be
-// a hardcoded constant — it's derived from auth.currentUser.uid at runtime
-// (see index.html). These UIDs must match the allowlist in
-// database.rules.json (that file is the actual security boundary).
+// Maps each person's Google account UID (from Firebase Google Sign-In) to a
+// display name. Both devices load this same deployed app.js, so the display
+// name can't be a hardcoded constant — it's derived from the signed-in
+// user's UID at runtime (see index.html). These UIDs must match the
+// allowlist in database.rules.json (that file is the actual security
+// boundary). Unlike anonymous-auth UIDs, these are tied to a Google account
+// and stay stable across cache clears, browser switches, and reinstalls —
+// only changing if a different Google account signs in.
+//
+// PLACEHOLDER VALUES below are the old anonymous-auth UIDs. After enabling
+// Google Sign-In in the Firebase Console and signing in once per device,
+// replace these with the new Google UIDs (see PLAN.md).
 export const USERS_BY_UID = {
   "gMGU7BE9XaM9tcDOaVirBPlQ2032": "Dusan",
   "U5zgSRvu8OhOudwDV0BfDuP9Dvp1": "Andrey"
