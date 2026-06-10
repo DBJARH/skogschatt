@@ -1,14 +1,16 @@
+const OWL_ICON = '<img src="../public/icons/favicon.svg" alt="owl" class="icon-emoji" />';
+
 const VIBES = {
   skog: {
     bodyClass: "vibe-skog",
-    btnLabel: "🦉 Kikinda",
+    btnLabel: `${OWL_ICON} Kikinda`,
     titleLabel: "🌲 Skogschatt",
     themeColor: "#1a3a1a"
   },
   kikinda: {
     bodyClass: "vibe-kikinda",
     btnLabel: "🌲 Skogen",
-    titleLabel: "🦉 Skogschatt",
+    titleLabel: `${OWL_ICON} Skogschatt`,
     themeColor: "#2a1a0a"
   }
 };
@@ -35,8 +37,8 @@ function toggleVibe() {
 function applyVibe() {
   const v = VIBES[currentVibe];
   document.body.className = v.bodyClass;
-  document.getElementById("vibe-toggle").textContent = v.btnLabel;
-  document.getElementById("title").textContent = v.titleLabel;
+  document.getElementById("vibe-toggle").innerHTML = v.btnLabel;
+  document.getElementById("title").innerHTML = v.titleLabel;
   document.querySelector('meta[name="theme-color"]').setAttribute("content", v.themeColor);
 }
 

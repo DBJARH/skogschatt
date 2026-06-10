@@ -93,3 +93,10 @@ button {
   padding: 0.5rem 1rem; border-radius: 2rem;
   font-size: 0.9rem; transition: background 0.2s;
 }
+
+.icon-emoji {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+  border-radius: 3px;
+}
