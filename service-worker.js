@@ -1,4 +1,4 @@
-const CACHE = "skogschatt-v9";
+const CACHE = "skogschatt-v10";
 const ASSETS = [
   "./src/index.html",
   "./src/forest.css",
