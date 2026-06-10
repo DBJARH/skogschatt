@@ -3,7 +3,7 @@
     "skogschatt": {
       "messages": {
         ".read": "auth != null",
-        ".write": "auth != null && (auth.uid === 'gMGU7BE9XaM9tcDOaVirBPlQ2032' || auth.uid === 'U5zgSRvu8OhOudwDV0BfDuP9Dvp1')",
+        ".write": "auth != null && (auth.uid === 'k8DojeZzjwZqVW0fvufiJAF8FpO2' || auth.uid === 'U5zgSRvu8OhOudwDV0BfDuP9Dvp1')",
         "$messageId": {
           ".validate": "newData.hasChildren(['user', 'text', 'ts'])"
         }
