@@ -15,11 +15,3 @@ export const firebaseConfig = {
   messagingSenderId: "309154824117",
   appId: "1:309154824117:web:ebae499cf4a85edbf523fc"
 };
-
-// Converts a Google account email into a Firebase Realtime Database key
-// (keys can't contain '.', '#', '$', '[', ']'). Used to look up
-// skogschatt/users/{emailKey} -> { community, name } at sign-in (see
-// index.html) and matched against database.rules.json.
-export function emailToKey(email) {
-  return email.replace(/\./g, ",");
-}

@@ -52,7 +52,7 @@
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { initChat } from "./chat.js";
     import { initUI } from "./ui.js";
-    import { firebaseConfig, emailToKey } from "./app.js";
+    import { firebaseConfig } from "./app.js";
     import "./SKOGCHATT.js";
 
     if ('serviceWorker' in navigator) {
@@ -78,9 +78,9 @@
     signoutBtn.addEventListener("click", () => signOut(auth));
 
     // Writes are gated by Firebase Auth + database.rules.json (email
-    // allowlist under skogschatt/users), so chat must wait for sign-in
+    // allowlist under skogschatt/userEmails), so chat must wait for sign-in
     // before sending. The display label ("MALMO Andrey" / "KIKINDA Dusan")
-    // is looked up from skogschatt/users/{emailKey} -> { community, name }.
+    // is looked up by scanning skogschatt/users for a matching email field.
     let chatStarted = false;
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -90,33 +90,14 @@
         return;
       }
 
-      if (user.email.includes(",")) {
-        loginStatus.textContent =
-          `Fatal: signed-in email "${user.email}" contains a comma, which is invalid in an email address and is reserved as the '.' placeholder in skogschatt/users keys.`;
-        throw new Error(`Invalid email contains comma: ${user.email}`);
-      }
-
-      const lookupKey = emailToKey(user.email);
-      window.SKOGCHATT.lastProfileLookup = { email: user.email, lookupKey };
-
-      const tokenResult = await user.getIdTokenResult();
-      window.SKOGCHATT.currentUser = {
-        uid: user.uid,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        tokenEmail: tokenResult.claims.email,
-        tokenEmailVerified: tokenResult.claims.email_verified
-      };
+      window.SKOGCHATT.lastProfileLookup = { email: user.email };
 
       let profile;
       try {
-        const profileSnap = await get(ref(db, `skogschatt/users/${lookupKey}`));
-        profile = profileSnap.val();
-        window.SKOGCHATT.lastProfileLookup.result = profile;
-
-        const allUsersSnap = await get(ref(db, "skogschatt/users"));
-        window.SKOGCHATT.allUsers = allUsersSnap.val();
-        window.SKOGCHATT.allUserKeys = Object.keys(allUsersSnap.val() || {});
+        const usersSnap = await get(ref(db, "skogschatt/users"));
+        const users = usersSnap.val() || {};
+        profile = Object.values(users).find((u) => u.email === user.email);
+        window.SKOGCHATT.lastProfileLookup.result = profile || null;
       } catch (err) {
         window.SKOGCHATT.lastProfileLookup.error = err.message;
         loginStatus.textContent = `Profile lookup failed: ${err.message}`;

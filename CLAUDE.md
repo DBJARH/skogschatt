@@ -22,14 +22,14 @@ public/
   images/kikinda-owls.svg
 src/
   index.html   - entry point
-  app.js       - Firebase config + emailToKey() helper
+  app.js       - Firebase config
   chat.js      - Firebase realtime chat logic
   ui.js        - vibe switching (Skog/Kikinda) + language toggle
   forest.css   - all styling, including vibe backgrounds
   SKOGCHATT.js - sets window.SKOGCHATT.build_stamp (local time), update
                  on every change so you can verify the deploy in the console
 service-worker.js - PWA cache (bump CACHE version when assets change)
-database.rules.json - RTDB security rules (email allowlist via skogschatt/users)
+database.rules.json - RTDB security rules (email allowlist via skogschatt/userEmails)
 ```
 
 ## Conventions
@@ -39,14 +39,20 @@ database.rules.json - RTDB security rules (email allowlist via skogschatt/users)
   Don't bake dimming into the SVGs themselves — keep the overlay in `forest.css`.
 - All paths must stay relative (GitHub Pages serves from `/skogschatt/` subpath).
 - All devices load the same deployed `app.js` — there is no per-device
-  config file. User identity/access is data, not code: Firebase RTDB has
-  `skogschatt/users/{emailKey} -> { community, name }`, where `emailKey` is
-  the signed-in Google account email with `.` replaced by `,` (see
-  `emailToKey()` in `src/app.js` — Firebase keys can't contain `.`).
-  `database.rules.json` gates `skogschatt/messages` read/write on the
-  caller's email existing under `skogschatt/users`. Adding a new
-  person/community means adding one entry under `skogschatt/users` in the
-  Firebase Console (Realtime Database data, not rules) — no redeploy needed.
+  config file. User identity/access is data, not code:
+  - `skogschatt/users/{ordinal} -> { community, name, email }` — plain
+    ordinal keys (`1`, `2`, ...). The app fetches all of `skogschatt/users`
+    after sign-in and finds the entry whose `email` matches the signed-in
+    Google account, to build the display label (e.g. "KIKINDA Dusan").
+  - `skogschatt/userEmails/{emailKey} -> true` — a separate index used only
+    by `database.rules.json` to gate `skogschatt/messages` read/write,
+    where `emailKey` is the signed-in Google account email with `.` replaced
+    by `,` (Firebase RTDB keys can't contain `.`). Rules can't search by
+    field value, hence this separate boolean map keyed by email.
+  - Adding a new person/community means adding one entry under
+    `skogschatt/users` (with `email`) AND one entry under
+    `skogschatt/userEmails` (comma-encoded email -> `true`) in the Firebase
+    Console (Realtime Database data, not rules) — no redeploy needed.
 - Auth uses `signInWithPopup` for Google Sign-In. (`signInWithRedirect` was
   tried first but failed: the redirect's pending-auth state was lost due to
   third-party storage partitioning between the `firebaseapp.com` authDomain
