@@ -16,11 +16,12 @@ export const firebaseConfig = {
   appId: "1:309154824117:web:ebae499cf4a85edbf523fc"
 };
 
-// Change this per device: "Dusan" on your machine, "Andrey" on Andrey's
-export const LOCAL_USER = "Dusan";
-
-// Client-side sanity check only — catches typos in LOCAL_USER above.
-// This is NOT the security boundary: actual write access is enforced by
-// Firebase Auth (anonymous sign-in) + the UID allowlist in
-// database.rules.json, on the backend.
-export const ALLOWED_USERS = ["Dusan", "Andrey"];
+// Maps each device's Firebase anonymous-auth UID to a display name.
+// Both devices load this same deployed app.js, so the display name can't be
+// a hardcoded constant — it's derived from auth.currentUser.uid at runtime
+// (see index.html). These UIDs must match the allowlist in
+// database.rules.json (that file is the actual security boundary).
+export const USERS_BY_UID = {
+  "gMGU7BE9XaM9tcDOaVirBPlQ2032": "Dusan",
+  "U5zgSRvu8OhOudwDV0BfDuP9Dvp1": "Andrey"
+};

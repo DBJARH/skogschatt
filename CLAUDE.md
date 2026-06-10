@@ -6,7 +6,7 @@ A two-person (Dusan & Andrej) bilingual (SV/EN) chat PWA with two visual "vibes"
 
 ## Stack
 - Vanilla JS (no React, no framework, no build step)
-- Firebase Realtime Database for chat (config in `src/app.js`)
+- Firebase Realtime Database for chat + Anonymous Auth (config in `src/app.js`)
 - Static PWA, deployed via GitHub Pages from `master` branch root
 
 ## Layout
@@ -17,11 +17,12 @@ public/
   images/kikinda-owls.svg
 src/
   index.html   - entry point
-  app.js       - Firebase config + LOCAL_USER ("Dusan" or "Andrej")
+  app.js       - Firebase config + USERS_BY_UID (UID -> "Dusan"/"Andrey")
   chat.js      - Firebase realtime chat logic
   ui.js        - vibe switching (Skog/Kikinda) + language toggle
   forest.css   - all styling, including vibe backgrounds
 service-worker.js - PWA cache (bump CACHE version when assets change)
+database.rules.json - RTDB security rules (UID allowlist for writes)
 ```
 
 ## Conventions
@@ -30,8 +31,11 @@ service-worker.js - PWA cache (bump CACHE version when assets change)
   `background-image` with a dark `linear-gradient` overlay for dimming.
   Don't bake dimming into the SVGs themselves — keep the overlay in `forest.css`.
 - All paths must stay relative (GitHub Pages serves from `/skogschatt/` subpath).
-- `LOCAL_USER` in `src/app.js` differs per device (Dusan vs Andrej) — don't
-  commit a "fix" that hardcodes one user as default for both.
+- Both devices load the same deployed `app.js` — there is no per-device
+  config file. Each device's display name ("Dusan"/"Andrey") is derived at
+  runtime from its Firebase anonymous-auth UID via `USERS_BY_UID` in
+  `src/app.js`. Adding a new device means adding its UID to both
+  `USERS_BY_UID` and the allowlist in `database.rules.json`.
 - Bump `CACHE` in `service-worker.js` whenever cached assets (HTML/CSS/JS/images) change.
 
 ## Deployment
