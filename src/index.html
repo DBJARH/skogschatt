@@ -98,6 +98,16 @@
 
       const lookupKey = emailToKey(user.email);
       window.SKOGCHATT.lastProfileLookup = { email: user.email, lookupKey };
+
+      const tokenResult = await user.getIdTokenResult();
+      window.SKOGCHATT.currentUser = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        tokenEmail: tokenResult.claims.email,
+        tokenEmailVerified: tokenResult.claims.email_verified
+      };
+
       let profile;
       try {
         const profileSnap = await get(ref(db, `skogschatt/users/${lookupKey}`));
