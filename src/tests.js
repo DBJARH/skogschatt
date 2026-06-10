@@ -6,6 +6,7 @@
 //-----------------------------------------------
 
 import { ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { firebaseConfig } from "./app.js";
 
 // Each test unit (TU) returns true/false and never throws — it catches its
 // own errors, logs the happy or sad path via console.log, and returns false
@@ -46,6 +47,37 @@ async function tuUsersReadable(db) {
   return true;
 }
 
+async function tuUsersReadableViaRest(user) {
+  let token;
+  try {
+    token = await user.getIdToken();
+  } catch (err) {
+    console.log("[tests] tuUsersReadableViaRest: FAIL - getIdToken threw:", err.message);
+    return false;
+  }
+
+  const url = `${firebaseConfig.databaseURL}/skogschatt/users.json?auth=${token}`;
+  let res, body;
+  try {
+    res = await fetch(url);
+    body = await res.json();
+  } catch (err) {
+    console.log("[tests] tuUsersReadableViaRest: FAIL - fetch threw:", err.message);
+    return false;
+  }
+
+  if (!res.ok) {
+    console.log("[tests] tuUsersReadableViaRest: FAIL - HTTP", res.status, body);
+    return false;
+  }
+  if (!body || Object.keys(body).length === 0) {
+    console.log("[tests] tuUsersReadableViaRest: FAIL - empty/null body", body);
+    return false;
+  }
+  console.log("[tests] tuUsersReadableViaRest: PASS -", body);
+  return true;
+}
+
 async function tuProfileFound(db, user) {
   let snap;
   try {
@@ -72,7 +104,11 @@ export async function runTests(db, user) {
 
   if (!tuDbInitialized(db)) return false;
   if (!tuUserSignedIn(user)) return false;
-  if (!(await tuUsersReadable(db))) return false;
+
+  const sdkOk = await tuUsersReadable(db);
+  await tuUsersReadableViaRest(user);
+  if (!sdkOk) return false;
+
   if (!(await tuProfileFound(db, user))) return false;
 
   console.log("[tests] all checks passed");
