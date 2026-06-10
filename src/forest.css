@@ -7,7 +7,7 @@ html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; }
 body.vibe-skog {
   background-color: #0d1f0d;
   background-image:
-    linear-gradient(rgba(13,31,13,0.78), rgba(13,31,13,0.85)),
+    linear-gradient(rgba(13,31,13,0.45), rgba(13,31,13,0.55)),
     url("../public/images/forest-path.svg");
   background-size: cover;
   background-position: center;
