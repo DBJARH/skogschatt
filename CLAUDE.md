@@ -17,7 +17,8 @@ shown with the sender's name prefixed by their community code, e.g.
   - Move explaining of complex and necessary stuff into footnote section of the document
     - Call it "Vocabulary"
 - Do not over explain "in line"
-  - Instead use the "Vocabulary' to point to external sources
+  - Instead use the "Vocabulary" section
+    - And point to external sources if any
 - Do not assume anything, if in doubt ask
 
 ## Stack
