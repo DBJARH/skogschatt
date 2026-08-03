@@ -86,3 +86,20 @@ database.rules.json - RTDB security rules (any signed-in Google account)
 ## Deployment
 - Live at: https://dbjarh.github.io/skogschatt/src/index.html
 - Push to `master` → GitHub Pages rebuilds automatically.
+
+
+## Document versioning
+
+- Every markdown file **SHOULD** (not must) carry a decimal `version:` key in its front matter:
+
+```yaml
+---
+version: 0.1
+---
+```
+
+- `0.1` .. `1.0` — pre-releases leading up to release 1
+- `1.1` .. `2.0` — releases 1.1 through 2.0
+- and so on by the same pattern
+
+SHOULD, not MUST: skip it where this repo forbids front matter, and where front matter already exists just add the `version` key without disturbing the rest.
